@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			.klaviatura{
+				width: 20%;
+				margin: 0 auto;
+			}
+			.klaviatura .row{
+				display: block;
+				width: 180px;
+				height: 40px;
+				margin-bottom: 10px;
+				clear: both;
+				margin: 0 auto;
+			}
+			.klaviatura .key{
+				width: 45px;
+				height: 45px;
+				float: left;
+				cursor: pointer;
+				color: white;
+				text-align: center;
+				line-height: 40px;
+				 background: linear-gradient(21deg, #dd03e4, #5611ec);
+				
+			}
+			
+			.klaviatura .memory_c{
+				width: 60px;
+				height: 45px;
+				float: left;
+				cursor: pointer;
+				color: white;
+				text-align: center;
+				line-height: 40px;
+				 background: linear-gradient(21deg, #dd03e4, #5611ec);
+				
+			}
+			
+			.klaviatura .key:hover{
+				background: darkviolet;
+			}
+			
+			#result, #div{
+				width: 160px;
+				height: 40px;
+				margin: 0 auto;
+				display: block;
+				padding: 10px;
+				font-size: 18px;
+				color: #444;
+				margin-bottom: 10px;
+			}
+			
+			
+		</style>
+	</head>
+	<body>
+
+	<div class="klaviatura">
+		<div id = 'div'></div>
+		<input id="result" autofocus>
+		<div class="row">
+			<div class="key memory_c"><span>C</span></div>
+			<div class="key memory_c"><span>M+</span></div>
+			<div class="key memory_c"><span>MR</span></div>
+		</div>
+		<div class="row">
+			<div class="key"><span>1</span></div>
+			<div class="key"><span>2</span></div>
+			<div class="key"><span>3</span></div>
+			<div class="key operator"><span>+</span></div>
+		</div>
+		
+		<div class="row">		
+			<div class="key"><span>4</span></div>
+			<div class="key"><span>5</span></div>
+			<div class="key"><span>6</span></div>
+			<div class="key operator"><span>-</span></div>
+		</div>
+		
+		<div class="row">		
+			<div class="key"><span>7</span></div>
+			<div class="key"><span>8</span></div>
+			<div class="key"><span>9</span></div>
+			<div class="key operator"><span>*</span></div>
+		</div>
+		
+		<div class="row">		
+			<div class="key"><span>0</span></div>
+			<div class="key operator"><span>-</span></div>
+			<div class="key" id = 'operator_equals'><span>=</span></div>
+			<div class="key operator"><span>/</span></div>
+		</div>	
+	</div>
+	<script>
+	"use strict";
+	//Давайте реализуем калькулятор. Он будет работать как обычный классический калькулятор: у вас будет инпут, а под ним кнопочки с цифрами и знаками операций. По нажатию на цифры они должны появляться в инпуте. По нажатию на знак операции число из инпута должно 
+	//исчезать. После этого при вводе следующего числа в инпут и нажатия на знак равно в инпуте должен появится результат операции.
+	let operand1;
+	let operand2;
+	let operator = null;
+	let keys = document.querySelectorAll('div.key');
+	let value;
+	let memory;
+	
+	for(let key of keys)
+	{
+		key.addEventListener('click', () => {	
+												let innerHTML = key.firstChild.innerHTML;
+												
+												if(innerHTML != 'MR')
+													div.innerHTML += innerHTML;
+												else
+													if(memory != undefined)
+														div.innerHTML += memory;
+														
+												value = result.value;
+												
+												if(innerHTML == 'MR')
+												{
+													if(memory != undefined)
+														result.value = memory;
+													if(operand1 == undefined)
+														operand1 = memory;
+													if(operand2 == undefined)
+														operand2 = memory;	
+												
+												}
+												
+												else
+												{
+												
+												if(innerHTML == 'M+')
+												{
+													memory = result.value;
+													div.innerHTML = memory;
+												}
+												
+												else{
+												if(innerHTML == 'C')
+												{
+													operand1 = undefined;
+													operand2 = undefined;
+													operator = null;
+													div.innerHTML = '';
+													result.value = '';
+												}
+												else
+												{
+													if(innerHTML != '=')
+													{
+														if(key.classList.contains('operator'))
+														{
+															result.value = innerHTML;
+															operator = innerHTML;
+														}
+														else
+														{
+															if((value == '+') || (value == '-') || (value == '*')
+																|| (value == '/'))
+															{
+																result.value = innerHTML;
+																operand2 = result.value;
+															}
+															else
+															{
+																if(operator == null)
+																{
+																	result.value += innerHTML;
+																	operand1 = result.value;
+																}
+																else
+																{
+																	result.value += innerHTML;
+																	operand2 = result.value;
+																}
+															}
+														}
+													}
+													else
+													{
+														if(operator == '+')
+															result.value = Number(operand1)+Number(operand2);
+														else if(operator == '*')
+															result.value = Number(operand1)*Number(operand2);
+														else if(operator == '-')
+															result.value = Number(operand1)-Number(operand2);
+														else if(operator == '/')
+															result.value = Number(operand1)/Number(operand2);
+														
+														div.innerHTML += result.value;
+														operand1 = result.value;
+														operand2 = undefined;
+														operator = null;
+													}
+
+													}
+												}
+												}
+												}
+												);										
+	}
+ </script>
+	</body>
+</html>
